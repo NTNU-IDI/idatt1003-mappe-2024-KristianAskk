@@ -2,7 +2,6 @@ package edu.ntnu.idi.idatt.model;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * Represents a culinary recipe with details such as name, description, instructions, number of
@@ -15,11 +14,11 @@ import java.util.Objects;
  */
 public class Recipe {
 
+  private final List<Ingredient> ingredients;
   private String name;
   private String description;
   private String instructions;
   private int servings;
-  private final List<Ingredient> ingredients;
 
   /**
    * Constructs a new {@code Recipe} with the specified details.
