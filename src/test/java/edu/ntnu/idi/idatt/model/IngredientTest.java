@@ -5,6 +5,9 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.time.LocalDate;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -16,176 +19,166 @@ import org.junit.jupiter.api.Test;
  *
  * @author Kristian Ask Selmer
  */
-public class IngredientTest {
+@DisplayName("Tests for the Ingredient class")
+class IngredientTest {
 
   /**
-   * Tests that a valid Ingredient object is created with correct attributes.
+   * Positive tests, verifying correct and valid behavior of the Ingredient class.
    */
-  @Test
-  void testValidIngredientCreation() {
-    LocalDate expirationDate = LocalDate.now().plusDays(5);
-    Ingredient ingredient = new Ingredient("Sugar", 1.0, "kg", 10.0, expirationDate);
+  @Nested
+  @DisplayName("Positive Tests")
+  class PositiveTests {
 
-    assertEquals("Sugar", ingredient.getName());
-    assertEquals(1.0, ingredient.getAmount());
-    assertEquals("kg", ingredient.getUnit());
-    assertEquals(10.0, ingredient.getPrice());
-    assertEquals(expirationDate, ingredient.getExpirationDate());
+    private Ingredient ingredient;
+    private LocalDate futureDate;
+
+    @BeforeEach
+    void setUp() {
+      futureDate = LocalDate.now().plusDays(5);
+      ingredient = new Ingredient("Sugar", 1.0, "kg", 10.0, futureDate);
+    }
+
+    @Test
+    @DisplayName("Should create an ingredient with valid attributes")
+    void testValidIngredientCreation() {
+      assertEquals("Sugar", ingredient.getName(), "Name should match");
+      assertEquals(1.0, ingredient.getAmount(), "Amount should match");
+      assertEquals("kg", ingredient.getUnit(), "Unit should match");
+      assertEquals(10.0, ingredient.getPrice(), "Price should match");
+      assertEquals(futureDate, ingredient.getExpirationDate(), "Expiration date should match");
+    }
+
+    @Test
+    @DisplayName("Should set a valid amount without errors")
+    void testSetValidAmount() {
+      ingredient.setAmount(2.5);
+      assertEquals(2.5, ingredient.getAmount(), "Amount should be updated");
+    }
+
+    @Test
+    @DisplayName("Should verify that an ingredient is not expired")
+    void testIsNotExpired() {
+      assertFalse(ingredient.isExpired(), "Ingredient should not be expired yet");
+    }
+
+    @Test
+    @DisplayName("Should update expiration date to a valid future date")
+    void testSetValidExpirationDate() {
+      LocalDate newExpirationDate = LocalDate.now().plusDays(20);
+      ingredient.setExpirationDate(newExpirationDate);
+      assertEquals(newExpirationDate, ingredient.getExpirationDate(),
+          "Expiration date should be updated");
+    }
+
+    @Test
+    @DisplayName("Should return a properly formatted string representation")
+    void testToString() {
+      LocalDate distantFuture = LocalDate.of(2030, 12, 31);
+      ingredient.setExpirationDate(distantFuture);
+
+      String expectedString = "Ingredient{name='Sugar', amount=1.00 kg, price=10.00, expirationDate=2030-12-31}";
+      assertEquals(expectedString, ingredient.toString(),
+          "toString should return the expected format");
+    }
   }
 
   /**
-   * Tests that creating an Ingredient with an empty name throws an exception.
+   * Negative tests, verifying that appropriate exceptions are thrown for invalid inputs or
+   * scenarios.
    */
-  @Test
-  void testIngredientWithEmptyName() {
-    LocalDate expirationDate = LocalDate.now().plusDays(5);
+  @Nested
+  @DisplayName("Negative Tests")
+  class NegativeTests {
 
-    Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-      new Ingredient("", 1.0, "kg", 10.0, expirationDate);
-    });
+    @Test
+    @DisplayName("Should throw exception when creating ingredient with empty name")
+    void testIngredientWithEmptyName() {
+      LocalDate expirationDate = LocalDate.now().plusDays(5);
+      Exception exception = assertThrows(IllegalArgumentException.class, () ->
+          new Ingredient("", 1.0, "kg", 10.0, expirationDate)
+      );
+      assertEquals("Name cannot be null or blank", exception.getMessage(),
+          "Exception message should match");
+    }
 
-    assertEquals("Name cannot be null or blank", exception.getMessage());
-  }
+    @Test
+    @DisplayName("Should throw exception when creating ingredient with negative amount")
+    void testIngredientWithNegativeAmount() {
+      LocalDate expirationDate = LocalDate.now().plusDays(5);
+      Exception exception = assertThrows(IllegalArgumentException.class, () ->
+          new Ingredient("Sugar", -1.0, "kg", 10.0, expirationDate)
+      );
+      assertEquals("Amount cannot be negative", exception.getMessage(),
+          "Exception message should match");
+    }
 
-  /**
-   * Tests that creating an Ingredient with a negative amount throws an exception.
-   */
-  @Test
-  void testIngredientWithNegativeAmount() {
-    LocalDate expirationDate = LocalDate.now().plusDays(5);
+    @Test
+    @DisplayName("Should throw exception when creating ingredient with empty unit")
+    void testIngredientWithEmptyUnit() {
+      LocalDate expirationDate = LocalDate.now().plusDays(5);
+      Exception exception = assertThrows(IllegalArgumentException.class, () ->
+          new Ingredient("Sugar", 1.0, "", 10.0, expirationDate)
+      );
+      assertEquals("Unit cannot be null or blank", exception.getMessage(),
+          "Exception message should match");
+    }
 
-    Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-      new Ingredient("Sugar", -1.0, "kg", 10.0, expirationDate);
-    });
+    @Test
+    @DisplayName("Should throw exception when creating ingredient with negative price")
+    void testIngredientWithNegativePrice() {
+      LocalDate expirationDate = LocalDate.now().plusDays(5);
+      Exception exception = assertThrows(IllegalArgumentException.class, () ->
+          new Ingredient("Sugar", 1.0, "kg", -10.0, expirationDate)
+      );
+      assertEquals("Price cannot be negative", exception.getMessage(),
+          "Exception message should match");
+    }
 
-    assertEquals("Amount cannot be negative", exception.getMessage());
-  }
+    @Test
+    @DisplayName("Should throw exception when creating ingredient with past expiration date")
+    void testIngredientWithPastExpirationDate() {
+      LocalDate pastDate = LocalDate.now().minusDays(1);
+      Exception exception = assertThrows(IllegalArgumentException.class, () ->
+          new Ingredient("Sugar", 1.0, "kg", 10.0, pastDate)
+      );
+      assertEquals("Expiration date cannot be in the past", exception.getMessage(),
+          "Exception message should match");
+    }
 
-  /**
-   * Tests that creating an Ingredient with an empty unit throws an exception.
-   */
-  @Test
-  void testIngredientWithEmptyUnit() {
-    LocalDate expirationDate = LocalDate.now().plusDays(5);
+    @Test
+    @DisplayName("Should throw exception when setting negative amount")
+    void testSetNegativeAmount() {
+      Ingredient ingredient = new Ingredient("Sugar", 1.0, "kg", 10.0, LocalDate.now().plusDays(5));
 
-    Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-      new Ingredient("Sugar", 1.0, "", 10.0, expirationDate);
-    });
+      Exception exception = assertThrows(IllegalArgumentException.class, () ->
+          ingredient.setAmount(-2.0)
+      );
+      assertEquals("Amount cannot be negative", exception.getMessage(),
+          "Exception message should match");
+    }
 
-    assertEquals("Unit cannot be null or blank", exception.getMessage());
-  }
+    @Test
+    @DisplayName("Should throw exception when creating ingredient with expired date to test isExpired logic")
+    void testCreateIngredientWithExpiredDateThrows() {
+      LocalDate expiredDate = LocalDate.now().minusDays(1);
+      Exception exception = assertThrows(IllegalArgumentException.class, () ->
+          new Ingredient("Milk", 1.0, "liter", 15.0, expiredDate)
+      );
+      assertEquals("Expiration date cannot be in the past", exception.getMessage(),
+          "Exception message should match");
+    }
 
-  /**
-   * Tests that creating an Ingredient with a negative price throws an exception.
-   */
-  @Test
-  void testIngredientWithNegativePrice() {
-    LocalDate expirationDate = LocalDate.now().plusDays(5);
+    @Test
+    @DisplayName("Should throw exception when setting an expiration date in the past")
+    void testSetPastExpirationDate() {
+      Ingredient ingredient = new Ingredient("Eggs", 12.0, "units", 20.0,
+          LocalDate.now().plusDays(10));
 
-    Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-      new Ingredient("Sugar", 1.0, "kg", -10.0, expirationDate);
-    });
-
-    assertEquals("Price cannot be negative", exception.getMessage());
-  }
-
-  /**
-   * Tests that creating an Ingredient with an expiration date in the past throws an exception.
-   */
-  @Test
-  void testIngredientWithPastExpirationDate() {
-    LocalDate expirationDate = LocalDate.now().minusDays(1);
-
-    Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-      new Ingredient("Sugar", 1.0, "kg", 10.0, expirationDate);
-    });
-
-    assertEquals("Expiration date cannot be in the past", exception.getMessage());
-  }
-
-  /**
-   * Tests that setting a new valid amount updates the amount correctly.
-   */
-  @Test
-  void testSetValidAmount() {
-    Ingredient ingredient = new Ingredient("Sugar", 1.0, "kg", 10.0, LocalDate.now().plusDays(5));
-    ingredient.setAmount(2.5);
-
-    assertEquals(2.5, ingredient.getAmount());
-  }
-
-  /**
-   * Tests that setting a negative amount throws an exception.
-   */
-  @Test
-  void testSetNegativeAmount() {
-    Ingredient ingredient = new Ingredient("Sugar", 1.0, "kg", 10.0, LocalDate.now().plusDays(5));
-
-    Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-      ingredient.setAmount(-2.0);
-    });
-
-    assertEquals("Amount cannot be negative", exception.getMessage());
-  }
-
-  /**
-   * Tests that creating an Ingredient with an expiration date in the past throws an exception.
-   */
-  @Test
-  void testIsExpired() {
-    Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-      new Ingredient("Milk", 1.0, "liter", 15.0, LocalDate.now().minusDays(1));
-    });
-
-    assertEquals("Expiration date cannot be in the past", exception.getMessage());
-  }
-
-  /**
-   * Tests the isExpired method for an ingredient that is not expired.
-   */
-  @Test
-  void testIsNotExpired() {
-    Ingredient ingredient = new Ingredient("Milk", 1.0, "liter", 15.0, LocalDate.now().plusDays(1));
-
-    assertFalse(ingredient.isExpired());
-  }
-
-  /**
-   * Tests that setting a valid expiration date updates the date correctly.
-   */
-  @Test
-  void testSetValidExpirationDate() {
-    Ingredient ingredient = new Ingredient("Eggs", 12.0, "units", 20.0,
-        LocalDate.now().plusDays(10));
-    LocalDate newExpirationDate = LocalDate.now().plusDays(20);
-    ingredient.setExpirationDate(newExpirationDate);
-
-    assertEquals(newExpirationDate, ingredient.getExpirationDate());
-  }
-
-  /**
-   * Tests that setting an expiration date in the past throws an exception.
-   */
-  @Test
-  void testSetPastExpirationDate() {
-    Ingredient ingredient = new Ingredient("Eggs", 12.0, "units", 20.0,
-        LocalDate.now().plusDays(10));
-
-    Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-      ingredient.setExpirationDate(LocalDate.now().minusDays(5));
-    });
-
-    assertEquals("Expiration date cannot be in the past", exception.getMessage());
-  }
-
-  /**
-   * Tests that the toString method returns a properly formatted string.
-   */
-  @Test
-  void testToString() {
-    LocalDate expirationDate = LocalDate.of(2030, 12, 31);
-    Ingredient ingredient = new Ingredient("Butter", 0.5, "kg", 40.0, expirationDate);
-    String expectedString = "Ingredient{name='Butter', amount=0.50 kg, price=40.00, expirationDate=2030-12-31}";
-    assertEquals(expectedString, ingredient.toString());
+      Exception exception = assertThrows(IllegalArgumentException.class, () ->
+          ingredient.setExpirationDate(LocalDate.now().minusDays(5))
+      );
+      assertEquals("Expiration date cannot be in the past", exception.getMessage(),
+          "Exception message should match");
+    }
   }
 }
