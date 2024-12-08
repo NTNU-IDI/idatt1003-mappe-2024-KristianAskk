@@ -9,8 +9,7 @@ import java.util.Scanner;
  * Handles user input validation and parsing.
  *
  * <p>This class provides methods to validate and parse user input for integers, doubles, and
- * dates.
- * It also includes a method to handle user input for integers, doubles, and dates.</p>
+ * dates.</p>
  *
  * @author Kristian Ask Selmer
  */
