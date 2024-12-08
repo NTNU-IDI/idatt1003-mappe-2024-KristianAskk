@@ -72,4 +72,30 @@ public class UserInputHandler {
       }
     }
   }
+
+  /**
+   * Validates and returns a string input.
+   *
+   * @param scanner The Scanner object for user input.
+   * @param prompt  The message to display to the user.
+   * @return A valid string.
+   */
+  public static String takeStringInput(Scanner scanner, String prompt) {
+    while (true) {
+      System.out.print(prompt + ": ");
+      String input = scanner.nextLine();
+      if (input.isBlank()) {
+        System.out.println("Input cannot be blank.");
+        continue;
+      }
+      try {
+        Double.parseDouble(input);
+        System.out.println("Input cannot be a number.");
+        continue;
+      } catch (NumberFormatException e) {
+      }
+      return input;
+
+    }
+  }
 }

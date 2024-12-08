@@ -4,6 +4,7 @@ import edu.ntnu.idi.idatt.manager.Cookbook;
 import edu.ntnu.idi.idatt.manager.FoodStorage;
 import edu.ntnu.idi.idatt.service.CookbookService;
 import edu.ntnu.idi.idatt.service.FoodStorageService;
+import edu.ntnu.idi.idatt.util.UserInputHandler;
 import java.util.Scanner;
 
 /**
@@ -47,6 +48,18 @@ public class UserInterface {
 
     boolean abort = false;
     while (!abort) {
+      System.out.println("\n");
+      System.out.println("1. Add an ingredient");
+      System.out.println("2. Remove an ingredient");
+      System.out.println("3. Print all ingredients");
+
+      int action = UserInputHandler.takeIntInput(scanner, "Choose which action to perform");
+      switch (action) {
+        case 1 -> foodStorageService.addIngredient();
+        case 2 -> foodStorageService.removeIngredient();
+        case 3 -> foodStorageService.printIngredients();
+        default -> System.out.println("Invalid action. Please try again.");
+      }
     }
   }
 }

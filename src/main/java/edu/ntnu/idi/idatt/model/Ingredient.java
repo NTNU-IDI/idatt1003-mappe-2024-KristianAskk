@@ -157,6 +157,17 @@ public class Ingredient {
   }
 
   /**
+   * prints the ingredient in a pretty format
+   *
+   * @return a string representation of the ingredient item
+   */
+  public String prettyPrint() {
+    return String.format(
+        "%s\n    Amount: %.2f %s\n    Price: %.2f\n    Expiration Date: %s",
+        name, amount, unit, price, expirationDate);
+  }
+
+  /**
    * Validates that a string is not null or empty.
    *
    * @param value     the string to validate

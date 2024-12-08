@@ -56,10 +56,11 @@ public class FoodStorage {
     while (iterator.hasNext()) {
       Ingredient existing = iterator.next();
       if (existing.getUnit().equals(ingredient.getUnit())
-          && existing.getPrice() == ingredient.getPrice()
           && existing.getExpirationDate().equals(ingredient.getExpirationDate())) {
         double newAmount = existing.getAmount() + ingredient.getAmount();
+        double newPrice = existing.getPrice() + ingredient.getPrice();
         existing.setAmount(newAmount);
+        existing.setPrice(newPrice);
         isMerged = true;
       }
     }
@@ -103,7 +104,7 @@ public class FoodStorage {
     }
 
     if (availableIngredients.isEmpty()) {
-      throw new IllegalArgumentException("No non-expired ingredients available for: " + name);
+      throw new IllegalArgumentException("No ingredients available for: " + name);
     }
 
     Collections.sort(availableIngredients, Comparator.comparing(Ingredient::getExpirationDate));
@@ -114,9 +115,10 @@ public class FoodStorage {
     }
 
     if (amount > totalAvailable) {
+      String unit = availableIngredients.get(0).getUnit();
       throw new IllegalArgumentException(
-          "Insufficient non-expired quantity available for " + name + ". Available: "
-              + totalAvailable);
+          "Insufficient quantity available for " + name + ". Available: "
+              + totalAvailable + unit);
     }
 
     double remainingAmount = amount;
@@ -130,6 +132,8 @@ public class FoodStorage {
         remainingAmount -= currentAmount;
         ingredientList.remove(ing);
       } else {
+        double newPrice = ing.getPrice() * (ing.getAmount() - remainingAmount) / ing.getAmount();
+        ing.setPrice(newPrice);
         ing.setAmount(currentAmount - remainingAmount);
         remainingAmount = 0;
       }
@@ -298,14 +302,18 @@ public class FoodStorage {
    *
    * @return a string detailing the contents of the storage
    */
-  @Override
-  public String toString() {
+  public String stringRepresentation() {
     StringBuilder sb = new StringBuilder("Food Storage Contents:\n");
+
+    if (ingredients.isEmpty()) {
+      sb.append("No ingredients in storage.");
+      return sb.toString();
+    }
 
     for (Map.Entry<String, List<Ingredient>> entry : ingredients.entrySet()) {
       sb.append("Ingredient: ").append(entry.getKey()).append("\n");
       for (Ingredient ingredient : entry.getValue()) {
-        sb.append("  - ").append(ingredient).append("\n");
+        sb.append("  - ").append(ingredient.prettyPrint()).append("\n");
       }
     }
     return sb.toString();

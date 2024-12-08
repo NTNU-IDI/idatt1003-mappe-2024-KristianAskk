@@ -23,8 +23,9 @@ public class CookbookService {
   /**
    * Constructs a new CookbookService with the specified CookbookManager and Scanner.
    *
-   * @param cookbook the CookbookManager to interact with
-   * @param scanner  the Scanner for user input
+   * @param cookbook    the CookbookManager to interact with
+   * @param scanner     the Scanner for user input
+   * @param foodStorage the FoodStorageManager to interact with
    */
   public CookbookService(Cookbook cookbook, FoodStorage foodStorage, Scanner scanner) {
     this.foodStorage = foodStorage;
