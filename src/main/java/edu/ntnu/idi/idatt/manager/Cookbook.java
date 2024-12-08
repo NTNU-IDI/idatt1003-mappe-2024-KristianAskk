@@ -137,7 +137,6 @@ public class Cookbook {
     }
 
     for (Ingredient required : recipe.getIngredients()) {
-      String key = required.getName().toLowerCase();
       double totalAvailable = foodStorage.getAllIngredients().stream()
           .filter(i -> i.getName().equalsIgnoreCase(required.getName()))
           .filter(i -> !i.isExpired())

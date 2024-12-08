@@ -293,7 +293,7 @@ public class FoodStorage {
   public double calculateTotalValue() {
     return ingredients.values().stream()
         .flatMap(Collection::stream)
-        .mapToDouble(ingredient -> ingredient.getPrice() * ingredient.getAmount())
+        .mapToDouble(ingredient -> ingredient.getPrice())
         .sum();
   }
 

@@ -4,6 +4,7 @@ import edu.ntnu.idi.idatt.manager.FoodStorage;
 import edu.ntnu.idi.idatt.model.Ingredient;
 import edu.ntnu.idi.idatt.util.UserInputHandler;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Scanner;
 
 /**
@@ -73,11 +74,56 @@ public class FoodStorageService {
   }
 
   /**
-   * Print all the ingredients in the food storage
+   * Print all the ingredients in the food storage.
    */
   public void printIngredients() {
     System.out.println(foodStorage.stringRepresentation());
   }
 
+  /**
+   * Prints the total value of all ingredients in the food storage.
+   */
+  public void printTotalValueOfIngredients() {
+    if (foodStorage.getAllIngredients().isEmpty()) {
+      System.out.println("No ingredients in storage.");
+    } else {
+      System.out.println("Total value of ingredients: " + foodStorage.calculateTotalValue());
+    }
+  }
 
+  /**
+   * Searches for ingredients by name.
+   */
+  public void searchForIngredients() {
+    String keyword = UserInputHandler.takeStringInput(scanner, "Ingredient name");
+    List<Ingredient> ingredients = foodStorage.searchIngredientsByName(keyword);
+    if (ingredients.isEmpty()) {
+      System.out.println("No ingredients found.");
+    } else {
+      String ingredientsString = ingredients.size() == 1 ? "ingredient" : "ingredients";
+      System.out.println("Found " + ingredients.size() + " " + ingredientsString + ":");
+      for (Ingredient ingredient : ingredients) {
+        System.out.println(ingredient.prettyPrint());
+        System.out.println();
+      }
+    }
+  }
+
+  /**
+   * Prints all expired ingredients in the food storage.
+   */
+  public void printExpiredIngredients() {
+    List<Ingredient> expiredIngredients = foodStorage.getExpiredIngredients();
+    if (expiredIngredients.isEmpty()) {
+      System.out.println("No expired ingredients found.");
+    } else {
+      String ingredientsString = expiredIngredients.size() == 1 ? "ingredient" : "ingredients";
+      System.out.println("Found " + expiredIngredients.size() + " " + ingredientsString
+          + " that are expired:");
+      for (Ingredient ingredient : expiredIngredients) {
+        System.out.println(ingredient.prettyPrint());
+        System.out.println();
+      }
+    }
+  }
 }

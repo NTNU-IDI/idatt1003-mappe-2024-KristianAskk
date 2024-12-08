@@ -100,7 +100,7 @@ class FoodStorageTest {
       foodStorage.addIngredient(oliveOil);
 
       double expectedValue =
-          (sugar.getPrice() * sugar.getAmount()) + (oliveOil.getPrice() * oliveOil.getAmount());
+          sugar.getPrice() + oliveOil.getPrice();
       double totalValue = foodStorage.calculateTotalValue();
       assertEquals(expectedValue, totalValue, 0.01,
           "Total value should match sum of ingredient values");

@@ -48,16 +48,23 @@ public class UserInterface {
 
     boolean abort = false;
     while (!abort) {
-      System.out.println("\n");
+      System.out.println();
       System.out.println("1. Add an ingredient");
       System.out.println("2. Remove an ingredient");
       System.out.println("3. Print all ingredients");
+      System.out.println("4. Print total value of ingredients");
+      System.out.println("5. Search for ingredients");
+      System.out.println("6. Print expired ingredients");
+      System.out.println();
 
       int action = UserInputHandler.takeIntInput(scanner, "Choose which action to perform");
       switch (action) {
         case 1 -> foodStorageService.addIngredient();
         case 2 -> foodStorageService.removeIngredient();
         case 3 -> foodStorageService.printIngredients();
+        case 4 -> foodStorageService.printTotalValueOfIngredients();
+        case 5 -> foodStorageService.searchForIngredients();
+        case 6 -> foodStorageService.printExpiredIngredients();
         default -> System.out.println("Invalid action. Please try again.");
       }
     }
