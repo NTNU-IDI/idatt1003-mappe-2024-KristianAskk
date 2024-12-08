@@ -37,7 +37,6 @@ public class Ingredient {
     validateAmount(amount);
     validateString(unit, "Unit");
     validatePrice(price);
-    validateExpirationDate(expirationDate);
 
     this.name = name;
     this.amount = amount;
@@ -131,7 +130,6 @@ public class Ingredient {
    * @throws IllegalArgumentException if expirationDate is null or in the past
    */
   public void setExpirationDate(LocalDate expirationDate) {
-    validateExpirationDate(expirationDate);
     this.expirationDate = expirationDate;
   }
 
@@ -201,21 +199,6 @@ public class Ingredient {
   private void validatePrice(double price) {
     if (price < 0) {
       throw new IllegalArgumentException("Price cannot be negative");
-    }
-  }
-
-  /**
-   * Validates that the expiration date is not null or in the past.
-   *
-   * @param expirationDate the expiration date to validate
-   * @throws IllegalArgumentException if expirationDate is null or in the past
-   */
-  private void validateExpirationDate(LocalDate expirationDate) {
-    if (expirationDate == null) {
-      throw new IllegalArgumentException("Expiration date cannot be null");
-    }
-    if (expirationDate.isBefore(LocalDate.now())) {
-      throw new IllegalArgumentException("Expiration date cannot be in the past");
     }
   }
 

@@ -135,17 +135,6 @@ class IngredientTest {
     }
 
     @Test
-    @DisplayName("Should throw exception when creating ingredient with past expiration date")
-    void testIngredientWithPastExpirationDate() {
-      LocalDate pastDate = LocalDate.now().minusDays(1);
-      Exception exception = assertThrows(IllegalArgumentException.class, () ->
-          new Ingredient("Sugar", 1.0, "kg", 10.0, pastDate)
-      );
-      assertEquals("Expiration date cannot be in the past", exception.getMessage(),
-          "Exception message should match");
-    }
-
-    @Test
     @DisplayName("Should throw exception when setting negative amount")
     void testSetNegativeAmount() {
       Ingredient ingredient = new Ingredient("Sugar", 1.0, "kg", 10.0, LocalDate.now().plusDays(5));
@@ -154,30 +143,6 @@ class IngredientTest {
           ingredient.setAmount(-2.0)
       );
       assertEquals("Amount cannot be negative", exception.getMessage(),
-          "Exception message should match");
-    }
-
-    @Test
-    @DisplayName("Should throw exception when creating ingredient with expired date to test isExpired logic")
-    void testCreateIngredientWithExpiredDateThrows() {
-      LocalDate expiredDate = LocalDate.now().minusDays(1);
-      Exception exception = assertThrows(IllegalArgumentException.class, () ->
-          new Ingredient("Milk", 1.0, "liter", 15.0, expiredDate)
-      );
-      assertEquals("Expiration date cannot be in the past", exception.getMessage(),
-          "Exception message should match");
-    }
-
-    @Test
-    @DisplayName("Should throw exception when setting an expiration date in the past")
-    void testSetPastExpirationDate() {
-      Ingredient ingredient = new Ingredient("Eggs", 12.0, "units", 20.0,
-          LocalDate.now().plusDays(10));
-
-      Exception exception = assertThrows(IllegalArgumentException.class, () ->
-          ingredient.setExpirationDate(LocalDate.now().minusDays(5))
-      );
-      assertEquals("Expiration date cannot be in the past", exception.getMessage(),
           "Exception message should match");
     }
   }
