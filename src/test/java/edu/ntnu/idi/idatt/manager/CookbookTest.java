@@ -127,7 +127,7 @@ class CookbookTest {
 
       List<Recipe> suggestions = cookbook.suggestRecipes(foodStorage);
       assertEquals(1, suggestions.size(), "Only Pancakes should be suggested");
-      assertEquals("Pancakes", suggestions.get(0).getName(),
+      assertEquals("Pancakes", suggestions.getFirst().getName(),
           "Pancakes should be the suggested recipe");
     }
   }

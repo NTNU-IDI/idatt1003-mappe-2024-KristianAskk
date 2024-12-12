@@ -55,7 +55,7 @@ class FoodStorageTest {
 
       List<Ingredient> riceList = foodStorage.searchIngredientsByName("rice");
       assertEquals(1, riceList.size(), "Should still have a single entry after merging");
-      assertEquals(3.0, riceList.get(0).getAmount(), "Merged amount should be total of both");
+      assertEquals(3.0, riceList.getFirst().getAmount(), "Merged amount should be total of both");
     }
 
     @Test
@@ -69,7 +69,7 @@ class FoodStorageTest {
 
       List<Ingredient> milkList = foodStorage.searchIngredientsByName("milk");
       assertEquals(1, milkList.size(), "Milk should still exist");
-      assertEquals(1.5, milkList.get(0).getAmount(), "Remaining amount should be updated");
+      assertEquals(1.5, milkList.getFirst().getAmount(), "Remaining amount should be updated");
     }
 
     @Test
@@ -120,9 +120,9 @@ class FoodStorageTest {
 
       assertDoesNotThrow(() -> foodStorage.prepareRecipe(salsa),
           "Should prepare salsa without exception");
-      assertEquals(2.0, foodStorage.searchIngredientsByName("tomato").get(0).getAmount(),
+      assertEquals(2.0, foodStorage.searchIngredientsByName("tomato").getFirst().getAmount(),
           "Tomato reduced correctly");
-      assertEquals(90.0, foodStorage.searchIngredientsByName("salt").get(0).getAmount(),
+      assertEquals(90.0, foodStorage.searchIngredientsByName("salt").getFirst().getAmount(),
           "Salt reduced correctly");
     }
   }

@@ -115,7 +115,7 @@ public class FoodStorage {
     }
 
     if (amount > totalAvailable) {
-      String unit = availableIngredients.get(0).getUnit();
+      String unit = availableIngredients.getFirst().getUnit();
       throw new IllegalArgumentException(
           "Insufficient quantity available for " + name + ". Available: "
               + totalAvailable + unit);
@@ -203,45 +203,6 @@ public class FoodStorage {
   public List<Ingredient> getAllIngredients() {
     return ingredients.values().stream()
         .flatMap(Collection::stream)
-        .collect(Collectors.toList());
-  }
-
-  /**
-   * Finds ingredients that are expiring before a given date.
-   *
-   * @param date the cutoff expiration date
-   * @return a list of ingredients expiring before the given date
-   */
-  public List<Ingredient> getIngredientsExpiringBefore(LocalDate date) {
-    return ingredients.values().stream()
-        .flatMap(Collection::stream)
-        .filter(ingredient -> ingredient.getExpirationDate().isBefore(date))
-        .sorted(Comparator.comparing(Ingredient::getExpirationDate))
-        .collect(Collectors.toList());
-  }
-
-  /**
-   * Finds ingredients that are expiring after a given date.
-   *
-   * @param date the cutoff expiration date
-   * @return a list of ingredients expiring after the given date
-   */
-  public List<Ingredient> getIngredientsExpiringAfter(LocalDate date) {
-    return ingredients.values().stream()
-        .flatMap(Collection::stream)
-        .filter(ingredient -> ingredient.getExpirationDate().isAfter(date))
-        .sorted(Comparator.comparing(Ingredient::getExpirationDate))
-        .collect(Collectors.toList());
-  }
-
-  /**
-   * Retrieves ingredients sorted alphabetically by name.
-   *
-   * @return a list of ingredients sorted by name
-   */
-  public List<Ingredient> getIngredientsSortedByName() {
-    return getAllIngredients().stream()
-        .sorted(Comparator.comparing(Ingredient::getName, String.CASE_INSENSITIVE_ORDER))
         .collect(Collectors.toList());
   }
 

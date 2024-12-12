@@ -15,8 +15,8 @@ import java.time.LocalDate;
 public class Ingredient {
 
   private final String name;
+  private final String unit;
   private double amount;
-  private String unit;
   private double price;
   private LocalDate expirationDate;
 
@@ -84,17 +84,6 @@ public class Ingredient {
   }
 
   /**
-   * Sets the unit of the ingredient item.
-   *
-   * @param unit the new unit of the ingredient item
-   * @throws IllegalArgumentException if unit is null or empty
-   */
-  public void setUnit(String unit) {
-    validateString(unit, "Unit");
-    this.unit = unit;
-  }
-
-  /**
    * Returns the price of the ingredient item.
    *
    * @return the price of the ingredient item
@@ -155,7 +144,7 @@ public class Ingredient {
   }
 
   /**
-   * prints the ingredient in a pretty format
+   * Prints the ingredient in a pretty format.
    *
    * @return a string representation of the ingredient item
    */

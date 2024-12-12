@@ -70,7 +70,8 @@ public class CookbookService {
       return;
     }
     System.out.println(
-        "You can now add ingredients to the recipe. Type 'yes' to add an ingredient or 'done' to finish.");
+        "You can now add ingredients to the recipe."
+            + " Type 'yes' to add an ingredient or 'done' to finish.");
 
     while (true) {
       String input = UserInputHandler.takeStringInput(scanner, "Add ingredient? (yes/done)");
