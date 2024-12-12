@@ -55,6 +55,8 @@ public class UserInterface {
       System.out.println("4. Print total value of ingredients");
       System.out.println("5. Search for ingredients");
       System.out.println("6. Print expired ingredients");
+      System.out.println("7. Add Recipe to Cookbook");
+      System.out.println("8. Print all recipes");
       System.out.println();
 
       int action = UserInputHandler.takeIntInput(scanner, "Choose which action to perform");
@@ -65,6 +67,8 @@ public class UserInterface {
         case 4 -> foodStorageService.printTotalValueOfIngredients();
         case 5 -> foodStorageService.searchForIngredients();
         case 6 -> foodStorageService.printExpiredIngredients();
+        case 7 -> cookbookService.addRecipe();
+        case 8 -> cookbookService.printAllRecipes();
         default -> System.out.println("Invalid action. Please try again.");
       }
     }

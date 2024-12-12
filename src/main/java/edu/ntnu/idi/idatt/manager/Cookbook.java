@@ -164,4 +164,13 @@ public class Cookbook {
     }
     return name.toLowerCase();
   }
+
+  /**
+   * Returns all recipes in the cookbook.
+   *
+   * @return a list of all recipes in the cookbook
+   */
+  public List<Recipe> getAllRecipes() {
+    return new ArrayList<>(recipes.values());
+  }
 }
