@@ -20,6 +20,22 @@ public class UserInterface {
   private CookbookService cookbookService;
   private Scanner scanner;
 
+  /**
+   * Prints the menu to the user.
+   */
+  private static void printMenu() {
+    System.out.println("1. Add an ingredient");
+    System.out.println("2. Remove an ingredient");
+    System.out.println("3. Print all ingredients");
+    System.out.println("4. Print total value of ingredients");
+    System.out.println("5. Search for ingredients");
+    System.out.println("6. Print expired ingredients");
+    System.out.println("7. Add Recipe to Cookbook");
+    System.out.println("8. Print all recipes");
+    System.out.println("9. Check if you can prepare a recipe");
+    System.out.println("10. Suggest recipes that can be made with ingredients in the food storage");
+    System.out.println("11. Exit");
+  }
 
   /**
    * Initializes the application.
@@ -49,14 +65,7 @@ public class UserInterface {
     boolean abort = false;
     while (!abort) {
       System.out.println();
-      System.out.println("1. Add an ingredient");
-      System.out.println("2. Remove an ingredient");
-      System.out.println("3. Print all ingredients");
-      System.out.println("4. Print total value of ingredients");
-      System.out.println("5. Search for ingredients");
-      System.out.println("6. Print expired ingredients");
-      System.out.println("7. Add Recipe to Cookbook");
-      System.out.println("8. Print all recipes");
+      printMenu();
       System.out.println();
 
       int action = UserInputHandler.takeIntInput(scanner, "Choose which action to perform");
@@ -69,8 +78,12 @@ public class UserInterface {
         case 6 -> foodStorageService.printExpiredIngredients();
         case 7 -> cookbookService.addRecipe();
         case 8 -> cookbookService.printAllRecipes();
+        case 9 -> cookbookService.canPrepareRecipe();
+        case 10 -> cookbookService.suggestRecipes();
+        case 11 -> abort = true;
         default -> System.out.println("Invalid action. Please try again.");
       }
     }
+    System.out.println("Goodbye!");
   }
 }

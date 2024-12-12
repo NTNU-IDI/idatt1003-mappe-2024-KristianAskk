@@ -131,7 +131,7 @@ public class Cookbook {
    * @param foodStorage the FoodStorage to check against
    * @return true if the recipe can be prepared, false otherwise
    */
-  private boolean canPrepareRecipe(Recipe recipe, FoodStorage foodStorage) {
+  public boolean canPrepareRecipe(Recipe recipe, FoodStorage foodStorage) {
     if (recipe == null) {
       return false;
     }

@@ -141,4 +141,38 @@ public class CookbookService {
     List<Recipe> recipes = cookbook.getAllRecipes();
     printRecipes(recipes);
   }
+
+  /**
+   * Checks if a given recipe can be prepared from the ingredients in the provided FoodStorage.
+   */
+  public void canPrepareRecipe() {
+    String name = UserInputHandler.takeStringInput(scanner, "Recipe name");
+    try {
+      Recipe recipe = cookbook.getRecipe(name);
+      if (cookbook.canPrepareRecipe(recipe, foodStorage)) {
+        System.out.println("You can prepare the recipe!");
+      } else {
+        System.out.println("You cannot prepare the recipe.");
+      }
+    } catch (IllegalArgumentException e) {
+      System.out.println(e.getMessage());
+    }
+  }
+
+  /**
+   * Suggestions for recipes that can be made with the ingredients in the food storage.
+   */
+  public void suggestRecipes() {
+    List<Recipe> recipes = cookbook.suggestRecipes(foodStorage);
+
+    if (recipes.isEmpty()) {
+      System.out.println("No recipes can be made with the ingredients in the food storage.");
+      return;
+    }
+
+    System.out.println("Suggested recipes:");
+    for (Recipe recipe : recipes) {
+      System.out.println(recipe.getName());
+    }
+  }
 }
