@@ -9,11 +9,24 @@ STUDENT ID = "10094"
 
 ## Project description
 
-[//]: # (TODO: Write a short description of your project/product here.)
+This project is a portfolio application for managing and storing recipes. It includes functionality for adding ingredients, creating recipes, managing a cookbook, and tracking food storage.
 
 ## Project structure
 
-[//]: # (TODO: Describe the structure of your project here. How have you used packages in your structure. Where are all sourcefiles stored. Where are all JUnit-test classes stored. etc.)
+- **Source Files**:
+  - Located in `src/main/java/edu/ntnu/idi/idatt/`
+  - Includes:
+    - `App.java` (Main class)
+    - `UserInterface.java`
+    - `manager/` (Cookbook and FoodStorage logic)
+    - `model/` (Ingredient and Recipe classes)
+    - `service/` (Service classes for managing cookbook and storage logic)
+    - `util/` (UserInputHandler for handling input)
+  
+- **Test Files**:
+  - Located in `src/test/java/edu/ntnu/idi/idatt/`
+  - Includes:
+    - Unit tests for `Cookbook`, `FoodStorage`, `Ingredient`, and `Recipe`.
 
 ## Link to repository
 
@@ -21,14 +34,10 @@ STUDENT ID = "10094"
 
 ## How to run the project
 
-[//]: # (TODO: Describe how to run your project here. What is the main class? What is the main method?
-What is the input and output of the program? What is the expected behaviour of the program?)
+1. `mvn clean install`
+2. `java -cp target/idatt1003-mappe-2024-KristianAskk-1.0.0.jar edu.ntnu.idi.idatt.App`
 
 ## How to run the tests
 
-[//]: # (TODO: Describe how to run the tests here.)
+Run `mvn test`
 
-## References
-
-[//]: # (TODO: Include references here, if any. For example, if you have used code from the course book, include a reference to the chapter.
-Or if you have used code from a website or other source, include a link to the source.)
